@@ -1,0 +1,14 @@
+- name: "Web installation"
+ hosts: 3.208.13.0
+ become: yes
+ tasks:
+  - name: "install Nginx"
+    ansible.builtin.dnf:
+      name: nginx
+      state: present
+  - name: "enable start"
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+
