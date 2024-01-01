@@ -1,14 +1,33 @@
 - name: "Web installation"
- hosts: 3.208.13.0
- become: yes
- tasks:
+  hosts: localhost
+  become: yes
+  tasks:
   - name: "install Nginx"
     ansible.builtin.dnf:
       name: nginx
       state: present
+  - name: "remove old html data"
+    ansible.built.file:
+      path: /usr/share/nginx/html
+      state: absent
+  - name: "creaete directory"
+      path: /usr/share/nginx/html
+      state: directory
+  - name : "downlaod web application"
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/web.zip
+      dest: /tmp
+  - name: "extraction zip file"
+    ansible.builtin.unarchive:
+      src: /tmp/web.zip
+      dest: /usr/share/nginx/html
+      remote_src: yes
   - name: "enable start"
     ansible.builtin.service:
       name: nginx
-      state: started
+      state: restarted
       enabled: yes
+
+  
+
 
